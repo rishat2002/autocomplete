@@ -47,6 +47,7 @@ function addEventOnRepoItem(dropItem, dataItem) {
         listWithDescription.appendChild(repoItemName)
         listWithDescription.appendChild(repoItemOwner)
         listWithDescription.appendChild(repoItemStars)
+        inputForm.value=''
         clearDropList()
     })
 
