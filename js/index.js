@@ -13,12 +13,14 @@ function sendRequest(url) {
     })
 }
 const debounce = (fn, debounceTime) => {
-let timeout;
-  return function () {
-    const fnCall = () => { fn.apply(this, arguments) }
-    clearTimeout(timeout);
-    timeout = setTimeout(fnCall, debounceTime)
-  };
+    let timeout;
+    return function (...rest) {
+        const fnCall = () => {
+            fn.apply(this, rest)
+        }
+        clearTimeout(timeout);
+        timeout = setTimeout(fnCall, debounceTime)
+    };
 };
 
 
@@ -45,12 +47,23 @@ function addEventOnRepoItem(dropItem, dataItem) {
         listWithDescription.appendChild(repoItemName)
         listWithDescription.appendChild(repoItemOwner)
         listWithDescription.appendChild(repoItemStars)
-        while (inputDropList.firstChild) {
-            inputDropList.removeChild(inputDropList.firstChild);
-        }
-        inputForm.value=''
+        clearDropList()
     })
 
+}
+
+function createDropItem(item) {
+    const dropItem = document.createElement('li')
+    dropItem.classList.add('container__dropItem')
+    dropItem.textContent = data.item.name
+    inputDropList.appendChild(dropItem)
+    return dropItem;
+}
+
+function clearDropList() {
+    while (inputDropList.firstChild) {
+        inputDropList.removeChild(inputDropList.firstChild);
+    }
 }
 
 function autocomplete(evt) {
@@ -58,24 +71,15 @@ function autocomplete(evt) {
     if (inputValue.length !== 0) {
         const requestURL = 'https://api.github.com/search/repositories?q=' + inputValue;
         sendRequest(requestURL).then(data => {
-                while (inputDropList.firstChild) {
-                    inputDropList.removeChild(inputDropList.firstChild);
+                clearDropList()
+                const dropItemCount = data.items.length<5?data.items.length:5;
+                for (let i = 0; i < dropItemCount; i++) {
+                    addEventOnRepoItem(createDropItem(data.items[i]), data.items[i])
                 }
-                if (data.items.length > 5) {
-                    for (let i = 0; i < 5; i++) {
-                        const dropItem = document.createElement('li')
-                        dropItem.classList.add('container__dropItem')
-                        dropItem.textContent = data.items[i].name
-                        inputDropList.appendChild(dropItem)
-                        addEventOnRepoItem(dropItem, data.items[i])
-                    }
-                } else {}
             })
             .catch(err => console.log(err))
     } else {
-        while (inputDropList.firstChild) {
-            inputDropList.removeChild(inputDropList.firstChild);
-        }
+        clearDropList()
     }
 }
 
@@ -85,4 +89,4 @@ function addEventDeleteRepoItem(deleteButton) {
     })
 }
 
-inputForm.addEventListener('input', debounce(autocomplete,500))
+inputForm.addEventListener('input', debounce(autocomplete, 500))

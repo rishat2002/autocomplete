@@ -54,6 +54,7 @@ form {
     margin-top: 62px;
 }
 .container__dropItem {
+    cursor: pointer;
     width: 500px;
     height: 44px;
     background: #E3E3E3;
@@ -61,6 +62,9 @@ form {
     padding-left: 13px;
 }
 
+.container__dropItem:hover {
+  opacity: 0.75
+}
 
 .searchResults {
     display: flex;
@@ -81,6 +85,7 @@ form {
 }
 
 .container__repoItem {
+    cursor: pointer;
     width: 500px;
     height: 101px;
     background: #E27BEB;
@@ -91,11 +96,18 @@ form {
     align-items: center;
 }
 
+.container__repoItem:hover{
+    opacity: 0.75
+}
 
 .container__deleteRepoItem {
     width: 42px;
     height: 38px;
     background-image: url(../img/ic/Slice%202.svg)
+}
+
+.container__deleteRepoItem:hover {
+    border:1px solid black;
 }
 .active {
     display: block
