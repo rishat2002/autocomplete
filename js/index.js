@@ -56,7 +56,7 @@ function addEventOnRepoItem(dropItem, dataItem) {
 function createDropItem(item) {
     const dropItem = document.createElement('li')
     dropItem.classList.add('container__dropItem')
-    dropItem.textContent = data.item.name
+    dropItem.textContent = item.name
     inputDropList.appendChild(dropItem)
     return dropItem;
 }
